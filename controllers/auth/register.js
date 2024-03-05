@@ -1,19 +1,64 @@
 const bcrypt = require('bcrypt');
-const { EMAIL_ALREADY_EXISTS, INTERNAL_SERVER_ERROR } = require("../../response_messages/errorMessage");
+const { EMAIL_ALREADY_EXISTS, INTERNAL_SERVER_ERROR, PELASE_CHOOSE_AN_IMAGE, RESUME_TOO_BIG, RESUME_NOT_UPLOAD } = require("../../response_messages/errorMessage");
 const { v4: uuid } = require('uuid');
 const { sendMailForVerification } = require('../../services/emailVerification');
 const { ERROR, SUCCESS } = require('../../response_messages/statusCode');
 const { userModel } = require('../../models/userModel');
+const { insertFileintoFirebase } = require('../../firebase/insertFile');
 
 const userRegister = async (req, res) => {
-    const { firstName, lastName, gender, email, password, type, skills, resume, profilePic } = req.body;
+    const { firstName, lastName, gender, email, password, type, skills } = req.body;
 
     try {
+        if (!req.files || !req.files.avatar) {
+            return res.status(ERROR).json({ error: PELASE_CHOOSE_AN_IMAGE });
+        };
+        const { avatar, resume } = req.files;
+        //check file size
+        if (avatar.size > 500000) {
+            return res.status(ERROR).json({ error: PROFILE_PIC_TOO_BIG });
+        };
+
+        if (resume.size > 1000000) {
+            return res.status(ERROR).json({ error: RESUME_TOO_BIG });
+        };
+
         const existingUser = await userModel.findOne({ email });
         if (existingUser) {
             return res.status(ERROR).json({ error: EMAIL_ALREADY_EXISTS });
         }
+        //store image in firebase and get image url
+        let fileName = avatar.name;
+        let splittedFileName = fileName.split('.')
+        let newFileName = splittedFileName[0] + uuid() + '.' + splittedFileName[splittedFileName.length - 1];
+        const metaData = {
+            contentType: avatar.mimetype
+        };
 
+        let imageUrl = await insertFileintoFirebase(newFileName, req.files.avatar.data, metaData)
+        if (!imageUrl) {
+            if (user.gender == 'male') {
+                imageUrl = `https://cdn-icons-png.flaticon.com/128/1999/1999625.png`
+            } else if (user.gender == 'female') {
+                imageUrl = `https://cdn-icons-png.flaticon.com/128/201/201634.png`
+            } else {
+                imageUrl = `https://cdn-icons-png.flaticon.com/128/64/64572.png`
+            }
+        };
+
+        //update resume name and upload in firebase
+        let resumeFileName = avatar.name;
+        let splittedResumeFileName = resumeFileName.split('.')
+        let newResumeFileName = splittedResumeFileName[0] + uuid() + '.' + splittedResumeFileName[splittedResumeFileName.length - 1];
+        const metaDataResume = {
+            contentType: resume.mimetype
+        };
+
+        let resumeUrl = await insertFileintoFirebase(newResumeFileName, req.files.resume.data, metaDataResume)
+
+        if (!resumeUrl) {
+           return res.status(ERROR).json({ error: RESUME_NOT_UPLOAD });
+        };
         // Generate verification token
         const verificationToken = Math.random().toString(36).substring(2, 5) + uuid();
 
@@ -25,10 +70,10 @@ const userRegister = async (req, res) => {
             lastName,
             gender,
             email,
-            type, 
-            skills, 
-            resume, 
-            profilePic,
+            type,
+            skills,
+            resume: resumeUrl,
+            profilePic: imageUrl,
             verificationToken,
             password: hashedPassword
         };
@@ -36,7 +81,7 @@ const userRegister = async (req, res) => {
         // Save user in db
         await userModel.create(newUser)
 
-        const htmlContent =`
+        const htmlContent = `
         <!DOCTYPE html>
 <html lang="en">
 <head>

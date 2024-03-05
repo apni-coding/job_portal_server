@@ -10,8 +10,6 @@ const userValidation = (req, res, next)=>{
         email,
         type, 
         skills, 
-        resume, 
-        profilePic,
         password
     };
     const userValidationSchema = Joi.object({
@@ -19,10 +17,9 @@ const userValidation = (req, res, next)=>{
         lastName: Joi.string(),
         gender: Joi.string().valid('male', 'female', 'other').required(),
         email: Joi.string().email().required(),
-        skills: Joi.array().items(Joi.string()).required(),
+        // skills: Joi.array().items(Joi.string()).required(),
+        skills: Joi.string().required(),
         type: Joi.string().valid('recruiter', 'applicant').required(),
-        resume: Joi.string().allow(''),
-        profilePic: Joi.string().allow(''),
         password: Joi.string().min(3).max(30).required(),
     });
     const {error} =  userValidationSchema.validate(userInfo);

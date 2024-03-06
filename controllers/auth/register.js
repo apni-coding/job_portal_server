@@ -123,7 +123,7 @@ const userRegister = async (req, res) => {
             <p style="color: #737F8D; font-size: 16px; line-height: 24px; margin-bottom: 20px;">Wowwee! Thanks for registering an account with Job Portal! </p>
             <p style="color: #737F8D; font-size: 16px; line-height: 24px; margin-bottom: 20px;">Before we get started, we'll need to verify your email.</p>
             <div style="text-align: center;">
-                <a href="http://localhost:5000/test" style="display: inline-block; background-color: #7289DA; color: white; text-decoration: none; font-family: 'Ubuntu', sans-serif; font-size: 15px; font-weight: normal; padding: 15px 30px; border-radius: 3px;">Verify Email</a>
+                <a href="http://localhost:5000/api/verifyemail/${email}/${verificationToken}" style="display: inline-block; background-color: #7289DA; color: white; text-decoration: none; font-family: 'Ubuntu', sans-serif; font-size: 15px; font-weight: normal; padding: 15px 30px; border-radius: 3px;">Verify Email</a>
             </div>
         </div>
 

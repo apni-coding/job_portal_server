@@ -7,35 +7,34 @@ const { userModel } = require('../../models/userModel');
 const { insertFileintoFirebase } = require('../../firebase/insertFile');
 
 const userRegister = async (req, res) => {
-    const { firstName, lastName, gender, email, password, type, skills } = req.body;
+    const { name, gender, email, password, type, skills, bio, contactNumber } = req.body;
 
     try {
-        if (!req.files || !req.files.avatar) {
+        if (!req.files || !req.files.profile) {
             return res.status(ERROR).json({ error: PELASE_CHOOSE_AN_IMAGE });
         };
-        const { avatar, resume } = req.files;
+        const { profile, resume } = req.files;
+        
         //check file size
-        if (avatar.size > 500000) {
+        if (profile.size > 500000) {
             return res.status(ERROR).json({ error: PROFILE_PIC_TOO_BIG });
         };
 
-        if (resume.size > 1000000) {
-            return res.status(ERROR).json({ error: RESUME_TOO_BIG });
-        };
-
-        const existingUser = await userModel.findOne({ email });
-        if (existingUser) {
+        const existingUser = await userModel.find({ email });
+        console.log(existingUser)
+        if (existingUser.length>0) {
             return res.status(ERROR).json({ error: EMAIL_ALREADY_EXISTS });
-        }
+        };
+     
         //store image in firebase and get image url
-        let fileName = avatar.name;
+        let fileName = profile.name;
         let splittedFileName = fileName.split('.')
         let newFileName = splittedFileName[0] + uuid() + '.' + splittedFileName[splittedFileName.length - 1];
         const metaData = {
-            contentType: avatar.mimetype
+            contentType: profile.mimetype
         };
 
-        let imageUrl = await insertFileintoFirebase(newFileName, req.files.avatar.data, metaData)
+        let imageUrl = await insertFileintoFirebase(newFileName, req.files.profile.data, metaData)
         if (!imageUrl) {
             if (user.gender == 'male') {
                 imageUrl = `https://cdn-icons-png.flaticon.com/128/1999/1999625.png`
@@ -45,20 +44,26 @@ const userRegister = async (req, res) => {
                 imageUrl = `https://cdn-icons-png.flaticon.com/128/64/64572.png`
             }
         };
+        let resumeUrl ;
+        if (resume) {
+            if (resume.size > 1000000) {
+                return res.status(ERROR).json({ error: RESUME_TOO_BIG });
+            };
+            //update resume name and upload in firebase
+            let resumeFileName = resume.name;
+            let splittedResumeFileName = resumeFileName.split('.')
+            let newResumeFileName = splittedResumeFileName[0] + uuid() + '.' + splittedResumeFileName[splittedResumeFileName.length - 1];
+            const metaDataResume = {
+                contentType: resume.mimetype
+            };
 
-        //update resume name and upload in firebase
-        let resumeFileName = avatar.name;
-        let splittedResumeFileName = resumeFileName.split('.')
-        let newResumeFileName = splittedResumeFileName[0] + uuid() + '.' + splittedResumeFileName[splittedResumeFileName.length - 1];
-        const metaDataResume = {
-            contentType: resume.mimetype
-        };
+             resumeUrl = await insertFileintoFirebase(newResumeFileName, req.files.resume.data, metaDataResume)
 
-        let resumeUrl = await insertFileintoFirebase(newResumeFileName, req.files.resume.data, metaDataResume)
+            if (!resumeUrl) {
+                return res.status(ERROR).json({ error: RESUME_NOT_UPLOAD });
+            };
+        }
 
-        if (!resumeUrl) {
-           return res.status(ERROR).json({ error: RESUME_NOT_UPLOAD });
-        };
         // Generate verification token
         const verificationToken = Math.random().toString(36).substring(2, 5) + uuid();
 
@@ -66,14 +71,15 @@ const userRegister = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = {
-            firstName,
-            lastName,
+            name,
             gender,
             email,
             type,
             skills,
+            bio,
+            contactNumber,
             resume: resumeUrl,
-            profilePic: imageUrl,
+            profile: imageUrl,
             verificationToken,
             password: hashedPassword
         };
@@ -113,7 +119,7 @@ const userRegister = async (req, res) => {
         <!-- Main content section -->
         <div style="padding: 40px 20px;">
             <img src="https://cdn.discordapp.com/email_assets/127c95bbea39cd4bc1ad87d1500ae27d.png" alt="Party Wumpus" style="width: 100%; max-width: 500px; height: auto; margin-bottom: 20px;">
-            <h2 style="font-size: 20px; font-weight: 500; color: #4F545C; letter-spacing: 0.27px; margin-bottom: 10px;">Hey ${firstName},</h2>
+            <h2 style="font-size: 20px; font-weight: 500; color: #4F545C; letter-spacing: 0.27px; margin-bottom: 10px;">Hey ${name},</h2>
             <p style="color: #737F8D; font-size: 16px; line-height: 24px; margin-bottom: 20px;">Wowwee! Thanks for registering an account with Job Portal! </p>
             <p style="color: #737F8D; font-size: 16px; line-height: 24px; margin-bottom: 20px;">Before we get started, we'll need to verify your email.</p>
             <div style="text-align: center;">
@@ -132,7 +138,7 @@ const userRegister = async (req, res) => {
         //send email verfication mail 
         const mailSend = await sendMailForVerification(htmlContent, email);
         if (mailSend) {
-            return res.status(SUCCESS).json(newUser);
+            return res.status(SUCCESS).json({ newUser, message: 'Signup successful' });
         } else {
             res.status(ERROR).json({ error: INTERNAL_SERVER_ERROR });
         }

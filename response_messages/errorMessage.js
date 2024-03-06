@@ -18,7 +18,9 @@ const INVALID_OTP = 'Invalid OTP'
 const PELASE_CHOOSE_AN_IMAGE = 'Please choose an image'
 const PROFILE_PIC_TOO_BIG = 'Profile picture too big. Should be less than 500kb'
 const RESUME_TOO_BIG = 'Resume size too big. Shoudl be less than 3mb'
-const RESUME_NOT_UPLOAD = 'Resume not upload. Try again'
+const RESUME_NOT_UPLOAD = 'Resume not upload. Try again';
+const INVALID_CREDENTIALS = 'Invalid Credentials';
+const SIGN_IN_SUCCESSFULLY = 'Signin successfully'
 module.exports = {
     DUPLICATE_ENTRY_ERROR,
     REFERENCED_ROW_NOT_FOUND_ERROR,
@@ -37,5 +39,7 @@ module.exports = {
     PELASE_CHOOSE_AN_IMAGE,
     PROFILE_PIC_TOO_BIG,
     RESUME_TOO_BIG,
-    RESUME_NOT_UPLOAD
+    RESUME_NOT_UPLOAD,
+    INVALID_CREDENTIALS,
+    SIGN_IN_SUCCESSFULLY
 };

@@ -23,7 +23,8 @@ const INVALID_CREDENTIALS = 'Invalid Credentials';
 const SIGN_IN_SUCCESSFULLY = 'Signin successfully';
 const OTP_SEND = 'OTP send';
 const OTP_VERIFIED = 'OTP verified';
-const PASSWORD_UPDATE = 'Password update'
+const PASSWORD_UPDATE = 'Password update';
+const ACCOUNT_NOT_VERIFY = 'Account not verify'
 module.exports = {
     DUPLICATE_ENTRY_ERROR,
     REFERENCED_ROW_NOT_FOUND_ERROR,
@@ -47,5 +48,6 @@ module.exports = {
     SIGN_IN_SUCCESSFULLY,
     OTP_SEND,
     OTP_VERIFIED,
-    PASSWORD_UPDATE
+    PASSWORD_UPDATE,
+    ACCOUNT_NOT_VERIFY
 };

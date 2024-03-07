@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { INTERNAL_SERVER_ERROR, INVALID_CREDENTIALS,SIGN_IN_SUCCESSFULLY } = require("../../response_messages/errorMessage");
+const { INTERNAL_SERVER_ERROR, INVALID_CREDENTIALS,SIGN_IN_SUCCESSFULLY, ACCOUNT_NOT_VERIFY } = require("../../response_messages/errorMessage");
 const { SUCCESS, ERROR } = require('../../response_messages/statusCode');
 const { userModel } = require('../../models/userModel');
 
@@ -10,12 +10,19 @@ const userLogin = async (req, res) => {
 
         // Find user by email
         const user = await userModel.findOne({ email });
-
+        
         // If user not found or password doesn't match, return error
-        if (!user || !(await bcrypt.compare(password, user.password))) {
+        if (!user) {
             return res.status(ERROR).json({ error: INVALID_CREDENTIALS });
         }
+        if(!user.verified){
+            return res.status(ERROR).json({ error: ACCOUNT_NOT_VERIFY });
+        }
 
+        if(await bcrypt.compare(password, user.password)){
+            return res.status(ERROR).json({ error: INVALID_CREDENTIALS });
+
+        }
         // Generate JWT token
         const token = jwt.sign({ userId: user._id, userType: user.type }, process.env.JWTKEY, { expiresIn: '1h' });
 

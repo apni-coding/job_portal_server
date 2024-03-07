@@ -122,7 +122,7 @@ const userRegister = async (req, res) => {
             <h2 style="font-size: 20px; font-weight: 500; color: #4F545C; letter-spacing: 0.27px; margin-bottom: 10px;">Hey ${name},</h2>
             <p style="color: #737F8D; font-size: 16px; line-height: 24px; margin-bottom: 20px;">You're just one click away from getting started with Job Portal. All you need to do is verify your email address to activate your job portal account.</p>
             <div style="text-align: center;">
-                <a href="http://localhost:5000/api/verifyemail/${email}/${verificationToken}" style="display: inline-block; background-color: #7289DA; color: white; text-decoration: none; font-family: 'Ubuntu', sans-serif; font-size: 15px; font-weight: normal; padding: 15px 30px; border-radius: 3px;">Verify Email</a>
+                <a href="http://localhost:5000/auth/verifyemail/${email}/${verificationToken}" style="display: inline-block; background-color: #7289DA; color: white; text-decoration: none; font-family: 'Ubuntu', sans-serif; font-size: 15px; font-weight: normal; padding: 15px 30px; border-radius: 3px;">Verify Email</a>
             </div>
             <p style="color: #737F8D; font-size: 16px; line-height: 24px; margin-bottom: 20px;">Once your account is activated, you can start using all of Job Portal's features.</p>
             <p style="color: #737F8D; font-size: 16px; line-height: 24px; margin-bottom: 0px;">You're receiving this email because you recently created a new Job Portal account or added a new email address. If this wasn't you, please ignore this email.</p>

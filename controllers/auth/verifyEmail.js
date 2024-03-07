@@ -5,20 +5,19 @@ const verifyEmail = async (req, res) => {
     try {
         const { email, verificationToken } = req.params;
         const existingUser = await userModel.findOne({ email });
-        
         if (!existingUser) {
           const htmlData =`
           <h1 style="background-color: #f8d7da; 
-           border: 1px solid #f5c6cb; 
-           color: #721c24; 
-           padding: 10px 20px; 
-           border-radius: 5px; 
-           display: inline-block; 
-           max-width: 400px; 
-           text-align: center;
-           font-size: 18px; 
-           font-family: Arial, sans-serif; 
-           OOPS! Something went wrong
+          border: 1px solid #f5c6cb; 
+          color: #721c24; 
+          padding: 10px 20px; 
+          border-radius: 5px; 
+          display: inline-block; 
+          max-width: 400px; 
+          text-align: center;
+          font-size: 18px; 
+          font-family: Arial, sans-serif;"> 
+          OOPS! Something went wrong
           </h1>`
             return res.send(htmlData);
         }
@@ -26,16 +25,16 @@ const verifyEmail = async (req, res) => {
         if(existingUser.verified){
           const htmlData =`
           <h1 style="background-color: #f8d7da; 
-           border: 1px solid #f5c6cb; 
-           color: #721c24; 
-           padding: 10px 20px; 
-           border-radius: 5px; 
-           display: inline-block; 
-           max-width: 400px; 
-           text-align: center;
-           font-size: 18px; 
-           font-family: Arial, sans-serif; 
-           Email already verified
+          border: 1px solid #f5c6cb; 
+          color: #721c24; 
+          padding: 10px 20px; 
+          border-radius: 5px; 
+          display: inline-block; 
+          max-width: 400px; 
+          text-align: center;
+          font-size: 18px; 
+          font-family: Arial, sans-serif;"> 
+          Email already verified 
           </h1>`
             return res.send(htmlData);
         }
@@ -43,16 +42,16 @@ const verifyEmail = async (req, res) => {
         if(existingUser.verificationToken !== verificationToken){
           const htmlData =`
           <h1 style="background-color: #f8d7da; 
-           border: 1px solid #f5c6cb; 
-           color: #721c24; 
-           padding: 10px 20px; 
-           border-radius: 5px; 
-           display: inline-block; 
-           max-width: 400px; 
-           text-align: center;
-           font-size: 18px; 
-           font-family: Arial, sans-serif; 
-             Verification link expired
+          border: 1px solid #f5c6cb; 
+          color: #721c24; 
+          padding: 10px 20px; 
+          border-radius: 5px; 
+          display: inline-block; 
+          max-width: 400px; 
+          text-align: center;
+          font-size: 18px; 
+          font-family: Arial, sans-serif;"> 
+          Verification link expired
           </h1>`
             return res.send(htmlData);
         }
@@ -191,18 +190,18 @@ h1{
         return res.send(htmlContent);
     } catch (error) {
         console.error("Error occurred while verifying email:", error);
-        const htmlData = `
+          const htmlData =`
           <h1 style="background-color: #f8d7da; 
-           border: 1px solid #f5c6cb; 
-           color: #721c24; 
-           padding: 10px 20px; 
-           border-radius: 5px; 
-           display: inline-block; 
-           max-width: 400px; 
-           text-align: center;
-           font-size: 18px; 
-           font-family: Arial, sans-serif; 
-           ${INTERNAL_SERVER_ERROR}
+          border: 1px solid #f5c6cb; 
+          color: #721c24; 
+          padding: 10px 20px; 
+          border-radius: 5px; 
+          display: inline-block; 
+          max-width: 400px; 
+          text-align: center;
+          font-size: 18px; 
+          font-family: Arial, sans-serif;"> 
+          ${INTERNAL_SERVER_ERROR}
           </h1>`
         return res.send(htmlData);
 

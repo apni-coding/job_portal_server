@@ -1,4 +1,4 @@
-const { INTERNAL_SERVER_ERROR, USER_NOT_FOUND, INVALID_OTP,OTP_SEND, OTP_VERIFIED,PASSWORD_UPDATE  } = require("../../response_messages/errorMessage");
+const { INTERNAL_SERVER_ERROR, USER_NOT_FOUND, INVALID_OTP,OTP_SEND, OTP_VERIFIED,PASSWORD_UPDATE, ACCOUNT_NOT_VERIFY  } = require("../../response_messages/errorMessage");
 const { SUCCESS, ERROR } = require('../../response_messages/statusCode');
 const { userModel } = require('../../models/userModel');
 const { sendMailForVerification } = require("../../services/emailVerification");
@@ -16,7 +16,9 @@ const forgotPassword = async (req, res) => {
         if (!user) {
             return res.status(ERROR).json({ error: USER_NOT_FOUND });
         }
-
+        if(!user.verified){
+            return res.status(ERROR).json({ error: ACCOUNT_NOT_VERIFY });
+        }
         //generate 6 digit otp
         const otp = Math.floor(100000 + Math.random() * 900000);;
 

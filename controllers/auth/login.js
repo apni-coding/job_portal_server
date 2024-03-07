@@ -18,8 +18,8 @@ const userLogin = async (req, res) => {
         if(!user.verified){
             return res.status(ERROR).json({ error: ACCOUNT_NOT_VERIFY });
         }
-
-        if(await bcrypt.compare(password, user.password)){
+        const isCorrectPassword = await bcrypt.compare(password, user.password);
+        if(!isCorrectPassword){
             return res.status(ERROR).json({ error: INVALID_CREDENTIALS });
 
         }

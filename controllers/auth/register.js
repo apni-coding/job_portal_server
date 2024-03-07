@@ -120,16 +120,21 @@ const userRegister = async (req, res) => {
         <div style="padding: 40px 20px;">
             <img src="https://cdn.discordapp.com/email_assets/127c95bbea39cd4bc1ad87d1500ae27d.png" alt="Party Wumpus" style="width: 100%; max-width: 500px; height: auto; margin-bottom: 20px;">
             <h2 style="font-size: 20px; font-weight: 500; color: #4F545C; letter-spacing: 0.27px; margin-bottom: 10px;">Hey ${name},</h2>
-            <p style="color: #737F8D; font-size: 16px; line-height: 24px; margin-bottom: 20px;">Wowwee! Thanks for registering an account with Job Portal! </p>
-            <p style="color: #737F8D; font-size: 16px; line-height: 24px; margin-bottom: 20px;">Before we get started, we'll need to verify your email.</p>
+            <p style="color: #737F8D; font-size: 16px; line-height: 24px; margin-bottom: 20px;">You're just one click away from getting started with Job Portal. All you need to do is verify your email address to activate your job portal account.</p>
             <div style="text-align: center;">
                 <a href="http://localhost:5000/api/verifyemail/${email}/${verificationToken}" style="display: inline-block; background-color: #7289DA; color: white; text-decoration: none; font-family: 'Ubuntu', sans-serif; font-size: 15px; font-weight: normal; padding: 15px 30px; border-radius: 3px;">Verify Email</a>
             </div>
+            <p style="color: #737F8D; font-size: 16px; line-height: 24px; margin-bottom: 20px;">Once your account is activated, you can start using all of Job Portal's features.</p>
+            <p style="color: #737F8D; font-size: 16px; line-height: 24px; margin-bottom: 0px;">You're receiving this email because you recently created a new Job Portal account or added a new email address. If this wasn't you, please ignore this email.</p>
+        </div>
+
+        <div style="padding: 40px 20px;">
+            <p style="color: #737F8D; font-size: 16px; line-height: 24px; margin-bottom: 20px;">This email was sent to ${email}, which is associated with a Job Portal account.</p>
         </div>
 
         <!-- Footer section -->
         <div style="background: transparent; text-align: center; padding: 20px 0;">
-            <p style="color: #99AAB5; font-size: 12px; line-height: 24px; margin: 0;">Sent by Dummy • <a href="test.com" style="color: #1EB0F4; text-decoration: none;">check our blog</a> • <a href="https://twitter.com/" style="color: #1EB0F4; text-decoration: none;">@dummyapp</a></p>
+            <p style="color: #99AAB5; font-size: 12px; line-height: 24px; margin: 0;">&#169; 2024 Job Portal Inc., All Rights Reserved.
         </div>
 
     </div>

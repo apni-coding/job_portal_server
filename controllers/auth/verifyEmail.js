@@ -7,15 +7,54 @@ const verifyEmail = async (req, res) => {
         const existingUser = await userModel.findOne({ email });
         
         if (!existingUser) {
-            return res.send('<h1>OOPS! Something went wrong.</h1>');
+          const htmlData =`
+          <h1 style="background-color: #f8d7da; 
+           border: 1px solid #f5c6cb; 
+           color: #721c24; 
+           padding: 10px 20px; 
+           border-radius: 5px; 
+           display: inline-block; 
+           max-width: 400px; 
+           text-align: center;
+           font-size: 18px; 
+           font-family: Arial, sans-serif; 
+           OOPS! Something went wrong
+          </h1>`
+            return res.send(htmlData);
         }
 
         if(existingUser.verified){
-            return res.send('<h1>Email already verified</h1>');
+          const htmlData =`
+          <h1 style="background-color: #f8d7da; 
+           border: 1px solid #f5c6cb; 
+           color: #721c24; 
+           padding: 10px 20px; 
+           border-radius: 5px; 
+           display: inline-block; 
+           max-width: 400px; 
+           text-align: center;
+           font-size: 18px; 
+           font-family: Arial, sans-serif; 
+           Email already verified
+          </h1>`
+            return res.send(htmlData);
         }
 
         if(existingUser.verificationToken !== verificationToken){
-            return res.send('<h1>Verification link expired</h1>');
+          const htmlData =`
+          <h1 style="background-color: #f8d7da; 
+           border: 1px solid #f5c6cb; 
+           color: #721c24; 
+           padding: 10px 20px; 
+           border-radius: 5px; 
+           display: inline-block; 
+           max-width: 400px; 
+           text-align: center;
+           font-size: 18px; 
+           font-family: Arial, sans-serif; 
+             Verification link expired
+          </h1>`
+            return res.send(htmlData);
         }
 
         await userModel.findOneAndUpdate({ email }, { verified: true });
@@ -152,7 +191,20 @@ h1{
         return res.send(htmlContent);
     } catch (error) {
         console.error("Error occurred while verifying email:", error);
-        return res.send(`<h1>${INTERNAL_SERVER_ERROR}</h1>`);
+        const htmlData = `
+          <h1 style="background-color: #f8d7da; 
+           border: 1px solid #f5c6cb; 
+           color: #721c24; 
+           padding: 10px 20px; 
+           border-radius: 5px; 
+           display: inline-block; 
+           max-width: 400px; 
+           text-align: center;
+           font-size: 18px; 
+           font-family: Arial, sans-serif; 
+           ${INTERNAL_SERVER_ERROR}
+          </h1>`
+        return res.send(htmlData);
 
     }
 };

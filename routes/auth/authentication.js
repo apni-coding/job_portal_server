@@ -11,7 +11,7 @@ authRouter.post('/register', userValidation, userRegister);
 authRouter.post('/login', userLogin);
 authRouter.post('/forgotpasswordotp', forgotPassword);
 authRouter.post('/verifyotp', verifyOtp);
-authRouter.put('/login', updatePassword);
+authRouter.put('/updatepassword', updatePassword);
 authRouter.get('/verifyemail/:email/:verificationToken', verifyEmail);
 
 module.exports = { authRouter };

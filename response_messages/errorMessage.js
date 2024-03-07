@@ -20,7 +20,10 @@ const PROFILE_PIC_TOO_BIG = 'Profile picture too big. Should be less than 500kb'
 const RESUME_TOO_BIG = 'Resume size too big. Shoudl be less than 3mb'
 const RESUME_NOT_UPLOAD = 'Resume not upload. Try again';
 const INVALID_CREDENTIALS = 'Invalid Credentials';
-const SIGN_IN_SUCCESSFULLY = 'Signin successfully'
+const SIGN_IN_SUCCESSFULLY = 'Signin successfully';
+const OTP_SEND = 'OTP send';
+const OTP_VERIFIED = 'OTP verified';
+const PASSWORD_UPDATE = 'Password update'
 module.exports = {
     DUPLICATE_ENTRY_ERROR,
     REFERENCED_ROW_NOT_FOUND_ERROR,
@@ -41,5 +44,8 @@ module.exports = {
     RESUME_TOO_BIG,
     RESUME_NOT_UPLOAD,
     INVALID_CREDENTIALS,
-    SIGN_IN_SUCCESSFULLY
+    SIGN_IN_SUCCESSFULLY,
+    OTP_SEND,
+    OTP_VERIFIED,
+    PASSWORD_UPDATE
 };

@@ -7,4 +7,4 @@ const applicantRouter = express.Router();
 applicantRouter.get('/alljob', getAllJobs);
 
 
-module.exports={recuriterRouter}
+module.exports={applicantRouter}

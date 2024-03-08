@@ -6,6 +6,7 @@ require('dotenv').config();
 const upload = require('express-fileupload');
 const { authRouter } = require('./routes/auth/authentication');
 const { recuriterRouter } = require('./routes/recruiter/recruiterRoute');
+const { applicantRouter } = require('./routes/applicant/applicantRoute');
 
 
 
@@ -22,6 +23,7 @@ app.use(express.json());
 
 app.use('/auth', authRouter);
 app.use('/recruiter', recuriterRouter);
+app.use('/applicant', applicantRouter)
 
 const port = process.env.PORT || 3000;
 

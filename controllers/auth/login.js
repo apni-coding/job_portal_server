@@ -21,7 +21,6 @@ const userLogin = async (req, res) => {
         const isCorrectPassword = await bcrypt.compare(password, user.password);
         if(!isCorrectPassword){
             return res.status(ERROR).json({ error: INVALID_CREDENTIALS });
-
         }
         // Generate JWT token
         const token = jwt.sign({ userId: user._id, userType: user.type }, process.env.JWTKEY, { expiresIn: '1h' });

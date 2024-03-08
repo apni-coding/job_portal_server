@@ -140,7 +140,7 @@ const updatePassword =async(req, res)=>{
 
         const hashPassword = await bcrypt.hash(password, 10);
 
-        await userModel.findOneAndUpdate({ email }, { password:hashPassword });
+        await userModel.findOneAndUpdate({ email }, { password:hashPassword }, { new: true });
         return res.status(SUCCESS).json({ message: PASSWORD_UPDATE });
     } catch (error) {
         console.error("Error occurred while update password:", error);

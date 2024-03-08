@@ -5,6 +5,7 @@ const { dbConnect } = require('./config/dbConfig');
 require('dotenv').config();
 const upload = require('express-fileupload');
 const { authRouter } = require('./routes/auth/authentication');
+const { recuriterRouter } = require('./routes/recruiter/recruiterRoute');
 
 
 
@@ -19,7 +20,8 @@ app.use(cors({
 
 app.use(express.json());
 
-app.use('/auth', authRouter)
+app.use('/auth', authRouter);
+app.use('/recruiter', recuriterRouter);
 
 const port = process.env.PORT || 3000;
 

@@ -24,7 +24,8 @@ const SIGN_IN_SUCCESSFULLY = 'Signin successfully';
 const OTP_SEND = 'OTP send';
 const OTP_VERIFIED = 'OTP verified';
 const PASSWORD_UPDATE = 'Password update';
-const ACCOUNT_NOT_VERIFY = 'Account not verify'
+const ACCOUNT_NOT_VERIFY = 'Account not verify';
+const JOB_SUCESS_APPLY = 'Job Applied'
 module.exports = {
     DUPLICATE_ENTRY_ERROR,
     REFERENCED_ROW_NOT_FOUND_ERROR,
@@ -49,5 +50,5 @@ module.exports = {
     OTP_SEND,
     OTP_VERIFIED,
     PASSWORD_UPDATE,
-    ACCOUNT_NOT_VERIFY
+    ACCOUNT_NOT_VERIFY,JOB_SUCESS_APPLY
 };

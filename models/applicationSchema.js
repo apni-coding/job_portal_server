@@ -34,6 +34,6 @@ const applicationSchema = new mongoose.Schema({
   feedback: String
 });
 
-const Application = mongoose.model('Application', applicationSchema);
+const applicationModel = mongoose.model('Application', applicationSchema);
 
-module.exports = Application;
+module.exports = {applicationModel};

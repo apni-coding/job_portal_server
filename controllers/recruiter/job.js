@@ -29,15 +29,18 @@ exports.createJob = async (req, res) => {
 };
 
 // Controller for getting all jobs
-exports.getAllJobs = async (req, res) => {
-  try {
-    const jobs = await jobModel.find({ isOpening: true });
-    res.status(200).json(jobs);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
+exports.getFilterBasedJobs = async (req, res) => {
+    try {
+      const userId = req.userId;
+      const {isActive} = req.params;  
+      const jobs = await jobModel.find({ isOpening: isActive, jobOwnerId: userId });
+      res.status(SUCCESS).json(jobs);
+    } catch (error) {
+      console.error(error);
+      res.status(ERROR).json({ error: INTERNAL_SERVER_ERROR });
+    }
+  };
+  
 
 // Controller for getting a single job by ID
 exports.getJobById = async (req, res) => {

@@ -3,7 +3,7 @@ const { ERROR } = require('../response_messages/statusCode');
 const { USER_NOT_AUTHORIZED } = require('../response_messages/errorMessage');
 
 
-const recruiterAuthValidation = async (req, res, next)=>{
+const applicantAuthValidation = async (req, res, next)=>{
     // console.log('her in middle')
     const Authorization = req.headers.Authorization || req.headers.authorization;
    
@@ -13,7 +13,7 @@ const recruiterAuthValidation = async (req, res, next)=>{
             if(err){
                 return res.status(ERROR).json({error: USER_NOT_AUTHORIZED});
             }
-            if(info.userType !=='recruiter'){
+            if(info.userType !=='applicant'){
                 return res.status(ERROR).json({error: USER_NOT_AUTHORIZED});
             }
             req.userId = info.userId;
@@ -24,4 +24,4 @@ const recruiterAuthValidation = async (req, res, next)=>{
     }
 }
 
-module.exports = {recruiterAuthValidation}
+module.exports = {applicantAuthValidation}

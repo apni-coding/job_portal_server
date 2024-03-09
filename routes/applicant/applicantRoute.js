@@ -7,6 +7,7 @@ const { isToken } = require('../../middlewares/isUser');
 const applicantRouter = express.Router();
 
 applicantRouter.get('/alljob', isToken, getAllJobs);
-applicantRouter.post('/applyjob/', applicantAuthValidation, newApplication)
+applicantRouter.post('/applyjob/', applicantAuthValidation, newApplication);
+
 
 module.exports={applicantRouter}

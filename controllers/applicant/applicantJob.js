@@ -56,3 +56,41 @@ exports.newApplication = async (req, res) => {
         res.status(ERROR).json({ error: INTERNAL_SERVER_ERROR });
     }
 };
+
+
+exports.appliedJobs = async (req, res) => {
+    try {
+        const userId = req.userId;
+
+        // Find all applications by the user
+        const userApplications = await applicationModel.find({ user: userId });
+
+        // Create a mapping of job IDs to their respective status
+        const jobStatusMap = {};
+        userApplications.forEach(application => {
+            jobStatusMap[application.job.toString()] = application.status;
+        });
+
+        // Extract job ids from userApplications
+        const jobIds = userApplications.map(application => application.job);
+
+        // Find all jobs corresponding to the job ids
+        const appliedJobs = await jobModel.find({ _id: { $in: jobIds } });
+
+        // Add status to each job
+        const appliedJobsWithStatus = appliedJobs.map(job => {
+            return {
+                ...job.toObject(),
+                status: jobStatusMap[job._id.toString()] || 'pending' // Set default status as 'pending' if not found
+            };
+        });
+
+        // Send response with applied jobs data including status
+        res.status(SUCCESS).json(appliedJobsWithStatus);
+    } catch (error) {
+        console.error("Error while fetching applied jobs data:", error);
+        res.status(ERROR).json({ error: INTERNAL_SERVER_ERROR });
+    }
+};
+
+

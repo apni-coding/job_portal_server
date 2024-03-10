@@ -49,3 +49,34 @@ exports.getApplicationByJobId = async (req, res) => {
         res.status(ERROR).json({ error: INTERNAL_SERVER_ERROR });
     }
 };
+
+
+exports.applicationAction = async (req, res) => {
+  try {
+      const { userId, jobId, action, interviewDate } = req.body;
+      // Check if the action is valid
+      if (action !== 'accepted' && action !== 'rejected') {
+          return res.status(ERROR).json({ error: "Invalid action" });
+      }
+
+      // Find the application
+      const application = await applicationModel.findOne({ user: userId, job: jobId, status: 'pending' });
+      if (!application) {
+          return res.status(ERROR).json({ error: "Application not found" });
+      }
+
+      // Update application status based on action
+      if (action === 'accepted') {
+          application.status = 'accepted';
+          // application.interviewDate = interviewDate;
+      } else {
+          application.status = 'rejected';
+      }
+      await application.save();
+
+      res.status(SUCCESS).json({ message: "Application action completed successfully" });
+  } catch (error) {
+      console.error(error);
+      res.status(ERROR).json({ error: INTERNAL_SERVER_ERROR });
+  }
+};

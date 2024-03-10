@@ -1,0 +1,4 @@
+
+exports.getUserProfile = (req, res)=>{
+    
+}

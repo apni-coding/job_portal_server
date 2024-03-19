@@ -23,4 +23,22 @@ const isToken = async (req, res, next) => {
     }
 };
 
-module.exports = { isToken };
+
+const getUserId = async (req, res, next) => {
+    const authorizationHeader = req.headers.authorization || req.headers.Authorization || null;
+
+    if (!authorizationHeader || !authorizationHeader.startsWith('Bearer')) {
+        return res.status(ERROR).json({ error: USER_NOT_AUTHORIZED });
+    }
+
+    const token = authorizationHeader.split(' ')[1];
+    
+    try {
+        const decoded = jwt.verify(token, process.env.JWTKEY);
+        req.userId = decoded.userId;
+        next();
+    } catch (error) {
+        return res.status(ERROR).json({ error: USER_NOT_AUTHORIZED });
+    }
+};
+module.exports = { isToken,  getUserId};

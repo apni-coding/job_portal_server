@@ -7,7 +7,8 @@ const upload = require('express-fileupload');
 const { authRouter } = require('./routes/auth/authentication');
 const { recuriterRouter } = require('./routes/recruiter/recruiterRoute');
 const { applicantRouter } = require('./routes/applicant/applicantRoute');
-
+const swaggerUi = require('swagger-ui-express');
+const apiDocsJson = require('./swaggerUi/swagger.json');
 
 
 const app = express();
@@ -21,11 +22,13 @@ app.use(cors({
 
 app.use(express.json());
 
+app.get('/api-docs/*', swaggerUi.serve, swaggerUi.setup(apiDocsJson));
+
 app.use('/auth', authRouter);
 app.use('/recruiter', recuriterRouter);
-app.use('/applicant', applicantRouter)
+app.use('/applicant', applicantRouter);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
   console.log(`server is listening at port : ${port}`);

@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    verificationToken: {
+    verificationToken: { //this is used to verify user mail id
         type: String,
         default: null
     },

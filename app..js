@@ -8,7 +8,8 @@ const { authRouter } = require('./routes/auth/authentication');
 const { recuriterRouter } = require('./routes/recruiter/recruiterRoute');
 const { applicantRouter } = require('./routes/applicant/applicantRoute');
 const swaggerUi = require('swagger-ui-express');
-const apiDocsJson = require('./swaggerUi/swagger.json');
+const YAML = require('yamljs'); 
+const swaggerDocument = YAML.load('./swaggerUi/swagger.yaml');
 
 
 const app = express();
@@ -22,7 +23,7 @@ app.use(cors({
 
 app.use(express.json());
 
-app.get('/api-docs/*', swaggerUi.serve, swaggerUi.setup(apiDocsJson));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use('/auth', authRouter);
 app.use('/recruiter', recuriterRouter);

@@ -1,37 +1,37 @@
 const Joi = require('joi');
 const { ERROR } = require('../response_messages/statusCode');
 
-const userValidation = (req, res, next)=>{
-    const { firstName, lastName, gender, email, password, type, skills, resume, profilePic } = req.body;
+const userValidation = (req, res, next) => {
+    const { name, gender, email, password, type, skills, bio, contactNumber } = req.body;
     const userInfo = {
-        firstName,
-        lastName,
+        name,
         gender,
         email,
-        type, 
-        skills, 
-        resume, 
-        profilePic,
+        type,
+        // skills,
+        bio,
+        contactNumber,
         password
     };
     const userValidationSchema = Joi.object({
-        firstName: Joi.string().required(),
-        lastName: Joi.string(),
-        gender: Joi.string().valid('male', 'female', 'other').required(),
+        name: Joi.string().required(),
+        gender: Joi.string().valid('male', 'female', 'other').allow('', null),
         email: Joi.string().email().required(),
-        skills: Joi.array().items(Joi.string()).required(),
+        // skills: Joi.array().items(Joi.string()).allow('', null),
+     
         type: Joi.string().valid('recruiter', 'applicant').required(),
-        resume: Joi.string().allow(''),
-        profilePic: Joi.string().allow(''),
         password: Joi.string().min(3).max(30).required(),
+        contactNumber: Joi.string().required(),
+        bio: Joi.string().required(),
+        
     });
-    const {error} =  userValidationSchema.validate(userInfo);
-   if(error){
-    return res.status(ERROR).json({error: error.details[0].message});
-   };
-   next()
+    const { error } = userValidationSchema.validate(userInfo);
+    if (error) {
+        return res.status(ERROR).json({ error: error.details[0].message });
+    };
+    next()
 }
 
 
 
-module.exports = {userValidation};
+module.exports = { userValidation };

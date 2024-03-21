@@ -1,23 +1,25 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    firstName: {
+    name: {
         type: String,
         required: true
     },
-    lastName: String,
-    gender: {
+    gender: { //not use for recruiter
         type: String,
-        enum: ['male', 'female', 'other'],
-        required: true
+        enum: ['male', 'female', 'other'], 
     },
     email: {
         type: String,
         required: true
     },
+    password: {
+        type: String,
+        required: true
+    },
     skills:{
         type: [String],
-        required: true
+        
     }, 
     type: {
         type: String,
@@ -25,8 +27,19 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     resume: String, 
-    profilePic: String,
-    verificationToken: {
+    profile:{ //for recruiter use a compnay logo
+        type: String,
+        required: true
+    },
+    bio:{  //in recruiter case we use as a company description
+        type: String, 
+        required: true
+    },
+    contactNumber:{
+        type: String,
+        required: true
+    },
+    verificationToken: { //this is used to verify user mail id
         type: String,
         default: null
     },

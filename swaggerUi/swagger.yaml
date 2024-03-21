@@ -1,0 +1,275 @@
+openapi: "3.0.0"
+info:
+  version: "1.0.0"
+  description: "API for E-Commerce application"
+  title: "Testing API"
+servers:
+  - url: "http://localhost:5000"
+components:
+  securitySchemes:
+    JWT:
+      in: "header"
+      name: "Authorization"
+      type: "apiKey"
+paths:
+  /auth/register:
+    post:
+      tags:
+        - "Authenticate"
+      summary: "User Registration"
+      description: "User will be registered"
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+
+  /auth/login:
+    post:
+      tags:
+        - "Authenticate"
+      summary: "User Login"
+      description: "User login to get token"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                email:
+                  type: "string"
+                password:
+                  type: "string"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Incorrect Credentials"
+
+  /auth/myProfile:
+    get:
+      tags:
+        - "Authenticate"
+      summary: "User Profile"
+      description: "Get user information"
+      security:
+        - JWT: {}
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+
+  /auth/forgotpasswordotp:
+    post:
+      tags:
+        - "Authenticate"
+      summary: "Forgot Password OTP"
+      description: "Send OTP for password reset"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                email:
+                  type: "string"
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+
+  /auth/verifyotp:
+    post:
+      tags:
+        - "Authenticate"
+      summary: "Verify OTP"
+      description: "Verify OTP for password reset"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                email:
+                  type: "string"
+                otp:
+                  type: "string"
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+
+  /auth/updatepassword:
+    post:
+      tags:
+        - "Authenticate"
+      summary: "Update Password"
+      description: "Update user password"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                email:
+                  type: "string"
+                password:
+                  type: "string"
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+
+  /recruiter/createjob:
+    post:
+      tags:
+        - "Recruiter"
+      summary: "Add Job"
+      description: "Recruiter can add a job"
+      security:
+        - JWT: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                jobTitle:
+                  type: "string"
+                jobDescription:
+                  type: "string"
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+
+  /recruiter/getmyjob:
+    get:
+      tags:
+        - "Recruiter"
+      summary: "Get My Jobs"
+      description: "Recruiter can get their added jobs"
+      security:
+        - JWT: {}
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+
+  /applicant/alljob:
+    get:
+      tags:
+        - "Applicant"
+      summary: "Get All Jobs"
+      description: "Get all available jobs"
+      security:
+        - JWT: {}
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+
+  /applicant/applyjob:
+    post:
+      tags:
+        - "Applicant"
+      summary: "Apply Job"
+      description: "Applicant can apply for a job"
+      security:
+        - JWT: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                jobId:
+                  type: "string"
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+
+  /recruiter/jobs-with-application-count:
+    get:
+      tags:
+        - "Recruiter"
+      summary: "Jobs with Application Count"
+      description: "Get jobs with the count of applications"
+      security:
+        - JWT: {}
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+
+  /recruiter/get-application-by-jobid:
+    get:
+      tags:
+        - "Recruiter"
+      summary: "Get Applications by Job ID"
+      description: "Get applications for a specific job"
+      security:
+        - JWT: {}
+      parameters:
+        - name: "jobId"
+          in: "query"
+          description: "ID of the job"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+
+  /recruiter/applicationaction:
+    post:
+      tags:
+        - "Recruiter"
+      summary: "Application Action"
+      description: "Take action on job applications"
+      security:
+        - JWT: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                applicationId:
+                  type: "string"
+                action:
+                  type: "string"
+                  enum:
+                    - "accept"
+                    - "reject"
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+          
+  /applicant/appliedJobs:
+    get:
+      tags:
+        - "Applicant"
+      summary: "Get Applied Jobs"
+      description: "Get jobs that the applicant has applied to"
+      security:
+        - JWT: {}
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
